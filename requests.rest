@@ -1,0 +1,16 @@
+POST http://localhost:4000/api/user/register
+Content-Type: application/json
+
+{   
+    "firstname": "wale@test.com",
+    "lastname": "walewale",
+    "address" : "Alaba Layout Off FUTA road",
+    "email": "wale@test.com",
+    "password": "walewalefirst",
+    "phone": "08115861199"
+}
+
+###
+
+GET http://localhost:4000/api/user/login?email=irst product
+Content-Type: application/json
