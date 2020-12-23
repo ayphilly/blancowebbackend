@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
+
 var Schema = mongoose.Schema;
+
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 var schema = new Schema({
@@ -10,11 +12,12 @@ var schema = new Schema({
         unique: true
     },    
     price : {
-        type:Number,
+        type: Number,
         required:true
 
     },
-    image: Schema.Types.Mixed,
+    // image: Schema.Types.Mixed,
+    imageUrl : String
 }
 ,{
     timestamps:true

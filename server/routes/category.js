@@ -9,6 +9,8 @@ router.get('/', function(req, res, next) {
 
 router.post('/create', category.create);
 router.get('/getproducts/:id', category.getCatProduct);
+router.get('/getproductslow/:id', category.getCatProductLow);
+router.get('/getproductshigh/:id', category.getCatProductHigh);
 // router.delete('/delete', user.delete);
 // router.put('/updatebyid', user.updateById);
 

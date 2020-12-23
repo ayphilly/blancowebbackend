@@ -18,6 +18,7 @@ var schema = new Schema({
     },
     email : {
         type: String,
+        required: true,
         default: ''
     },    
     address : {

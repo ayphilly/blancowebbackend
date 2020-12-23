@@ -5,15 +5,15 @@ var categorySchema = mongoose.model('Category')
 var bcrypt = require('bcrypt');
 // const validation = require('../validation/productvalidation');
 
-exports.create = async (req, res, next)=> {
+exports.create = async (req, res)=> {
     
     var body = new Product(req);  
     var categoryId = req.body.categoryId;
-    
+    // image: req.file
     var query = {       
         name : req.body.name,        
-        price: req.body.price,
-        image: req.file
+        price: NumberDecimal(req.body.price) ,        
+        imageUrl: req.body.imageUrl
     }
 
     // validation = await regvalidate(body)
@@ -36,18 +36,24 @@ exports.create = async (req, res, next)=> {
     productSchema.create(query).then(newProd => {
         console.log(newProd.product_id);
         console.log(newProd._id);
-        // console.log(body)
+        
         categorySchema.findOneAndUpdate({category_id : req.body.categoryId}, {
             $push: { products: newProd._id }            
         }, function (err, result) {
-            if (err) {return res.send(err)} else {
+            if (err) {
+                // return console.error(err)
+                return res.status(400).send(err)
+            } else {
                 console.log(result);
-                return res.send(result);
+                
             }
             
         });
+
+        return res.status(200).send(newProd);
         
     }).catch(error => {
+        // return console.error(error)
         return res.status(400).send(error, 'Error creating product');
     })
         
@@ -174,7 +180,8 @@ class Product {
         
         this.name = product.body.name ;
         this.price = product.body.price;
-        this.image = product.file;
+        // this.image = product.file;
+        this.imageUrl = product.body.imageUrl;
        
     }
 }

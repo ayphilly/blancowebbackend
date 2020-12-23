@@ -36,10 +36,10 @@ exports.getCatProduct = (req, res) => {
     })
 }
 
-exports.getCatProductLow = (req, res) => {
+exports.getCatProductLow = async (req, res) => {
     var {id} = req.params;
 
-    category.findOne({category_id: id}).populate("products").sort({price:-1}).then(response => {
+    await category.findOne({category_id: id}).populate({ path : "products" , options: { sort: { price: 1 }} }).then(response => {
         console.log(response);
         res.status(200).send(response);
     }).catch( error => {
@@ -47,10 +47,10 @@ exports.getCatProductLow = (req, res) => {
     })
 }
 
-exports.getCatProductHigh = (req, res) => {
+exports.getCatProductHigh = async (req, res) => {
     var {id} = req.params;
 
-    category.findOne({category_id: id}).populate("products").sort({price:1}).then(response => {
+    await category.findOne({category_id: id}).populate({path: "products" , options: { sort: { price: -1 }} }).then(response => {
         console.log(response);
         res.status(200).send(response);
     }).catch( error => {

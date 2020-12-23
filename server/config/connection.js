@@ -27,23 +27,28 @@ mongoose.set('useFindAndModify',false);
 mongoose.connect(URL, {
     useNewUrlParser : true,
     useUnifiedTopology: true
+})
+.then (() => {
+    console.log('connected to mongodb');
+})
+.catch (err => {
+    console.error("Could not connect to mongodb", err);
 });
 
+// var conn =   mongoose.connection;
 
-var conn =   mongoose.connection;
-
-conn.on('error', () => {
-    console.error('error connecting to db')
-});
+// conn.on('error', () => {
+//     console.error('error connecting to db')
+// });
 
 // db.on('open', ()=> {
 //     console.log('connection to db successful')
 // });
 
-let gfs;
-conn.once("open", () => {
-    //init stream
-    console.log('connection to db successful')
-    gfs = Grid(conn.db, mongoose.mongo);  
-    gfs.collection('uploads');
-})
+// let gfs;
+// conn.once("open", () => {
+//     //init stream
+//     console.log('connection to db successful')
+//     gfs = Grid(conn.db, mongoose.mongo);  
+//     gfs.collection('uploads');
+// })
