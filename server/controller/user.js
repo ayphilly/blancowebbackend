@@ -49,31 +49,29 @@ exports.find = (req, res)=> {
     console.log(query);
     // var empty = query.isEmpty();
     if (!query){
-        res.status(400).send('email is not provided');
+        res.status(400).send({message : "wrong query, empty email"});
         console.log('not given')
         return;
     }
 
     userService.findUser (query, (error, response)=>{
-        if (error) {
-            
-            return res.status(404).json({'message': error});
-        }
+        
         if (response){
-            
+            console.log(response);
             bcrypt.compare(password, response.password, function (err, result) {
                 
                 if (result) {
-                    console.log(result)
-                    console.log(response);
-                    // console.log('Welcome back '. response.firstname)
-                    return res.status(200).send({message : response.firstname, text: 'Welcome Back'});
+                    
+                    // console.log('Welcome back '. response.firstname)                    
+                    return res.status(200).send(response, "it worked");
                 } else {
-                    return res.status(400).json({ message: err });
+                    return res.status(406).send(err);
                 }
             });
                
                      
+        } else {
+            return res.status(404).json({'message': error});
         }
         
     })
@@ -81,15 +79,17 @@ exports.find = (req, res)=> {
 exports.updateById= (req, res) => {
     var body = req.body;
     if (!body.id){
-        res.status(404).send(error);
+        res.status(400).send({message : " ID not provided, please provid ID"});
         return;
     }
-    var updateData = body.data;
+    var updateData = new User (body);
+    updateData.password = bcrypt.hashSync(updateData.password, 10);
+    console.log(updateData.password);
     userService.updateUserById(body.id, updateData, (error, response)=> {
         if (response){
             res.status(200).send(response);
         }else if (error) {
-            res.status(400).send(err);
+            res.status(500).send(error);
         }
     })
 
@@ -97,13 +97,13 @@ exports.updateById= (req, res) => {
 
 exports.update = (req, res) => {
     var body = req.body;
-    // var query = body.query;
-    var data = body.data;
+    var query = body.email;
+    
 
-    var query = new User(body);
+    var data = new User(body);
 
     if (!query) {
-        res.status(400).send('Bad Request');
+        res.status(204).send({message : "Email not provided, please provide email address"});
         return;
     }
     userService.updateUser(query, data, (error, response )=> {

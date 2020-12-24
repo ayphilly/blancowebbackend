@@ -42,9 +42,10 @@ exports.create = async (req, res)=> {
         }, function (err, result) {
             if (err) {
                 // return console.error(err)
-                return res.status(400).send(err)
+                return res.status(400).send({message : err})
             } else {
                 console.log(result);
+                return res.status(200).send({message:result})
                 
             }
             
@@ -54,7 +55,7 @@ exports.create = async (req, res)=> {
         
     }).catch(error => {
         // return console.error(error)
-        return res.status(400).send(error, 'Error creating product');
+        return res.status(400).send({message : error});
     })
         
         

@@ -42,16 +42,11 @@ var schema = new Schema({
 schema.pre('save', function(next) {
     var user = this;
 
-    //only hash if user has been modified
-    if (!user.isModified('password'))return next();
-
-    const saltRounds = 10;
-    bcrypt.hash(user.password, saltRounds, function(err, hash) {
-        if (err) return next(err);
-
-        user.password = hash;
-        next();
-    });
+    if(!this.isModified("password")) {
+        return next();
+    }
+    this.password = bcrypt.hashSync(this.password, 10);
+    next();
     
 
 });

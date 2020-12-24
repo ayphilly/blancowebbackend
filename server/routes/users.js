@@ -39,7 +39,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/register', user.create);
-router.get('/login',middleware(), user.find);
+router.get('/login', middleware(), user.find);
 router.put('/updatebyid', user.updateById);
 router.put('/update', user.update);
 router.delete('/delete', user.delete);
