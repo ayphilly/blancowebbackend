@@ -49,7 +49,7 @@ exports.find = (req, res)=> {
     console.log(query);
     // var empty = query.isEmpty();
     if (!query){
-        res.status(400).send({message : "wrong query, empty email"});
+        res.status(400).send({message: "Query cannot be empty"});
         console.log('not given')
         return;
     }
@@ -63,15 +63,15 @@ exports.find = (req, res)=> {
                 if (result) {
                     
                     // console.log('Welcome back '. response.firstname)                    
-                    return res.status(200).send(response, "it worked");
+                    return res.status(200).send({message : " it worked "});
                 } else {
-                    return res.status(406).send(err);
+                    return res.status(400).send({message : "password didn't match "});
                 }
             });
                
                      
         } else {
-            return res.status(404).json({'message': error});
+            return res.status(500).json({'message': error});
         }
         
     })
@@ -79,7 +79,7 @@ exports.find = (req, res)=> {
 exports.updateById= (req, res) => {
     var body = req.body;
     if (!body.id){
-        res.status(400).send({message : " ID not provided, please provid ID"});
+        res.status(400).send({message : " ID not provided, please provide ID"});
         return;
     }
     var updateData = new User (body);
@@ -103,14 +103,14 @@ exports.update = (req, res) => {
     var data = new User(body);
 
     if (!query) {
-        res.status(204).send({message : "Email not provided, please provide email address"});
+        res.status(400).send({message : "Email not provided, please provide email address"});
         return;
     }
     userService.updateUser(query, data, (error, response )=> {
         if (response){
             res.status(200).send(response);
         }else if (error) {
-            res.status(400).send(error);
+            res.status(500).send(error);
         }
     });
 }

@@ -69,7 +69,7 @@ exports.find = async (req, res)=> {
         return res.status(200).send(result);
     }).catch(err=> {
         console.log(err);
-        res.status(400).send(err)
+        res.status(400).send({message : err})
     })
 }
 
@@ -80,7 +80,7 @@ exports.findHighPrice = async (req, res)=> {
         return res.status(200).send(result);
     }).catch(err=> {
         console.log(err);
-        res.status(400).send(err)
+        res.status(500).send({message : err})
     })
 }
 
@@ -91,7 +91,7 @@ exports.findLowPrice = async (req, res)=> {
         return res.status(200).send(result);
     }).catch(err=> {
         console.log(err);
-        res.status(400).send(err)
+        res.status(500).send({message : err})
     })
 }
 
@@ -101,13 +101,17 @@ exports.findOne = async(req, res) => {
     const query = {
         product_id: id
     }
+    if (!query) {
+        res.status(400).send({message: "Query cannot be empty"});
+        return;
+    }
     await productSchema.findOne(query).then( result => {
         console.log(result);
         console.log(result.image.filename);
         return res.status(200).send(result);
     }).catch(err=> {
         console.log(err);
-        res.status(400).send(err + ' errorrr not ffff')
+        res.status(500).send({message : err})
     })
     
 }
@@ -118,15 +122,15 @@ exports.deleteProduct=(req, res) => {
         product_id: id
     };
     if (!query) {
-        res.status(400).send(error);
+        res.status(400).send({message : "Query cannot be empty"});
         return;
     }
-    productSchema.findOneAndDelete(query).then (result => {
+    productSchema.findOneAndDelete(query).then(result => {
         console.log('deleted');
-        res.status(200).send(response);
+        res.status(200).send(result);
     }).catch(err=> {
-        console.log(error);
-        res.status(400).send('Error Deleting Product')
+        console.log(err);
+        res.status(500).send({message: err})
     })
 }
  
